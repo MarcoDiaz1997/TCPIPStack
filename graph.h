@@ -104,21 +104,19 @@ get_nbr_node(interface_t *interface){
     assert(interface->link);
     
     link_t *link = interface->link;
-    (&link->intf1 == interface)? return link->intf2.att_node : return link->intf1.att_node;
-//    if(&link->intf1 == interface)
-//        return link->intf2.att_node;
-//    else
-//        return link->intf1.att_node;
+    if(&link->intf1 == interface)
+        return link->intf2.att_node;
+    else
+        return link->intf1.att_node;
 }
 
 static inline int
 get_node_intf_available_slot(node_t *node){
 
     int i=0 ;
-    while(i<MAX_INTF_PER_NODE){
-    	(node->intf[i]!= NULL)? ++i: break;
-    }
-    (i<MAX_INTF_PER_NODE)? return i: return -1;
+    while(i<MAX_INTF_PER_NODE && node->intf[i]!= NULL) ++i;
+    if(i<MAX_INTF_PER_NODE) return i;
+    else return -1;
 //    for( i = 0 ; i < MAX_INTF_PER_NODE; i++){
 //        if(node->intf[i])
 //            continue;
