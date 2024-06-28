@@ -38,6 +38,7 @@
 #define __GRAPH__
 
 #include <assert.h>
+#include <stddef.h>
 #include "gluethread/glthread.h"
 
 
@@ -109,13 +110,33 @@ static inline int
 get_node_intf_available_slot(node_t *node){
     
     int i=0;
-    while(i < MAX_INTF_PER_NODE)
-	node->intf[i] ? i++ : break;
+    int result = 0;
+    while(i < MAX_INTF_PER_NODE){
+        if(node->intf[i])
+	    ++i;
+	else
+	    break;
+    }
     if(i < MAX_INTF_PER_NODE)
 	return i;    
     return -1;
 
 }
+
+static inline interface_t* get_intf_by_if_name(node_t* node, char* if_name){
+    interface_t* intf = NULL;
+    int i;
+    for(i = 0;i<MAX_INTF_PER_NODE;++i){
+	if(!node->intf[i]){
+	    intf = node->intf[i];
+	    if(!strncmp(intf->if_name, if_name, IF_NAME_SIZE))
+		return intf;
+	}
+    }
+    return NULL;
+}
+
+
 
 /*Display Routines*/
 void dump_graph(graph_t *graph);
