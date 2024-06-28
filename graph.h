@@ -107,14 +107,14 @@ get_nbr_node(interface_t *interface){
 
 static inline int
 get_node_intf_available_slot(node_t *node){
-
-    int i ;
-    for( i = 0 ; i < MAX_INTF_PER_NODE; i++){
-        if(node->intf[i])
-            continue;
-        return i;
-    }
+    
+    int i=0;
+    while(i < MAX_INTF_PER_NODE)
+	node->intf[i] ? i++ : break;
+    if(i < MAX_INTF_PER_NODE)
+	return i;    
     return -1;
+
 }
 
 /*Display Routines*/
